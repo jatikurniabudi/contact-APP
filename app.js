@@ -1,5 +1,7 @@
 //core module
-const fs = require("fs");
+// const { rejects } = require("assert");
+
+// const { resolve } = require("path/posix");
 
 //write string ke file syncronous
 
@@ -20,7 +22,7 @@ const fs = require("fs");
 //   if (err) throw err;
 //   console.log(data);
 // });
-
+const fs = require("fs");
 const readline = require("readline");
 
 const rl = readline.createInterface({
@@ -28,16 +30,77 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-rl.question("Masukkan nama : ", (nama) => {
-  rl.question("Masukkan nomor HP : ", (noHP) => {
-    const kontak = { nama, noHP };
-    const file = fs.readFileSync("data/kontak.json", "utf-8");
-    const contact = JSON.parse(file);
+//cek folder data
+if (!fs.existsSync("./data")) {
+  fs.mkdirSync("./data");
+}
 
-    contact.push(kontak);
+//cek file kontak.json
+if (!fs.existsSync("./data/kontak.json")) {
+  fs.writeFileSync("./data/kontak.json", "[]", "utf-8");
+}
 
-    fs.writeFileSync("data/kontak.json", JSON.stringify(contact));
+//1
+// const input1 = () => {
+//   return new Promise((resolve, reject) => {
+//     rl.question("Masukkan nama Anda : ", (nama) => {
+//       resolve(nama);
+//     });
+//   });
+// };
 
-    rl.close();
+// const input2 = () => {
+//   return new Promise((resolve, reject) => {
+//     rl.question("Masukkan email Anda : ", (email) => {
+//       resolve(email);
+//     });
+//   });
+// };
+
+// const input3 = () => {
+//   return new Promise((resolve, reject) => {
+//     rl.question("Masukkan nomor HP Anda : ", (noHP) => {
+//       resolve(noHP);
+//     });
+//   });
+// };
+
+// const main_function = async () => {
+//   const nama = await input1();
+//   const email = await input2();
+//   const noHP = await input3();
+
+//   const kontak = { nama, email, noHP };
+//   const file = fs.readFileSync("./data/kontak.json", "utf-8");
+//   const contact = JSON.parse(file);
+
+//   contact.push(kontak);
+
+//   fs.writeFileSync("./data/kontak.json", JSON.stringify(contact));
+
+//   rl.close();
+// };
+
+const isiPertanyaan = (pertanyaan) => {
+  return new Promise((resolve, reject) => {
+    rl.question(pertanyaan, (nama) => {
+      resolve(nama);
+    });
   });
-});
+};
+const main_function = async () => {
+  const nama = await isiPertanyaan("Masukkan nama Anda : ");
+  const email = await isiPertanyaan("Masukkan email Anda : ");
+  const noHP = await isiPertanyaan("Masukkan nomor HP Anda : ");
+
+  const kontak = { nama, email, noHP };
+  const file = fs.readFileSync("./data/kontak.json", "utf-8");
+  const contact = JSON.parse(file);
+
+  contact.push(kontak);
+
+  fs.writeFileSync("./data/kontak.json", JSON.stringify(contact));
+
+  rl.close();
+};
+main_function();
