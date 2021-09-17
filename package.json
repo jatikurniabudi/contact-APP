@@ -1,0 +1,25 @@
+{
+  "name": "contact-APP",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jatikurniabudi/contact-APP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jatikurniabudi/contact-APP/issues"
+  },
+  "homepage": "https://github.com/jatikurniabudi/contact-APP#readme",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "validator": "^13.6.0",
+    "yargs": "^16.2.0"
+  }
+}

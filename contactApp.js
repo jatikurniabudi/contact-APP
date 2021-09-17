@@ -23,12 +23,14 @@
 //   console.log(data);
 // });
 const fs = require("fs");
-const readline = require("readline");
+const chalk = require("chalk");
+const validator = require("validator");
+// const readline = require("readline");
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+// const rl = readline.createInterface({
+//   input: process.stdin,
+//   output: process.stdout,
+// });
 
 //cek folder data
 if (!fs.existsSync("./data")) {
@@ -81,24 +83,43 @@ if (!fs.existsSync("./data/kontak.json")) {
 //   rl.close();
 // };
 
-const isiPertanyaan = (pertanyaan) => {
-  return new Promise((resolve, reject) => {
-    rl.question(pertanyaan, (nama) => {
-      resolve(nama);
-    });
-  });
-};
+// const isiPertanyaan = (pertanyaan) => {
+//   return new Promise((resolve, reject) => {
+//     rl.question(pertanyaan, (nama) => {
+//       resolve(nama);
+//     });
+//   });
+// };
 
 const simpanData = (nama, email, noHP) => {
   const kontak = { nama, email, noHP };
   const file = fs.readFileSync("./data/kontak.json", "utf-8");
   const contact = JSON.parse(file);
 
+  //cek nama duplicate
+  const duplicate = contact.find((contact) => contact.nama === nama);
+  if (duplicate) {
+    console.log(chalk.red.bold("Data sudah ada, gunakan nama lain"));
+    return false;
+  }
+
+  //cek format email
+  if (email) {
+    if (!validator.isEmail(email)) {
+      console.log(chalk.red.bold("Format email salah bro"));
+      return false;
+    }
+  }
+
+  //cek nomor HP
+  if (!validator.isMobilePhone(noHP, "id-ID")) {
+    console.log(chalk.red.bold("Yaelah no Hp salah, yang bener dong"));
+    return false;
+  }
+
   contact.push(kontak);
 
   fs.writeFileSync("./data/kontak.json", JSON.stringify(contact));
-
-  rl.close();
 };
 
-module.exports = { isiPertanyaan, simpanData };
+module.exports = { simpanData };
