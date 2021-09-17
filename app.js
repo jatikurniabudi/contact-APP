@@ -1,7 +1,12 @@
 const { type } = require("os");
 const { demand, demandOption } = require("yargs");
 const yargs = require("yargs");
-const { simpanData, listKontak, detailKontak } = require("./contactApp");
+const {
+  simpanData,
+  listKontak,
+  detailKontak,
+  deleteKontak,
+} = require("./contactApp");
 
 //add contact
 yargs
@@ -53,6 +58,22 @@ yargs.command({
   },
   handler(argv) {
     detailKontak(argv.nama);
+  },
+});
+
+//delete kontak
+yargs.command({
+  command: "delete",
+  describe: "Menghapus kontak",
+  builder: {
+    nama: {
+      describe: "Nama lengkap",
+      demandOption: true,
+      type: "string",
+    },
+  },
+  handler(argv) {
+    deleteKontak(argv.nama);
   },
 });
 

@@ -97,6 +97,7 @@ const loadKontak = () => {
   return contact;
 };
 
+//simpan data
 const simpanData = (nama, email, noHP) => {
   const kontak = { nama, email, noHP };
   const contact = loadKontak();
@@ -129,6 +130,7 @@ const simpanData = (nama, email, noHP) => {
   fs.writeFileSync("./data/kontak.json", JSON.stringify(contact));
 };
 
+//Show list kontak
 const listKontak = () => {
   const contact = loadKontak();
 
@@ -138,6 +140,7 @@ const listKontak = () => {
   });
 };
 
+//Show detail kontak
 const detailKontak = (nama) => {
   const contact = loadKontak();
 
@@ -155,4 +158,19 @@ const detailKontak = (nama) => {
   console.log(`No.HP : ${kontak.noHP}`);
 };
 
-module.exports = { simpanData, listKontak, detailKontak };
+const deleteKontak = (nama) => {
+  const contact = loadKontak();
+  const newContact = contact.filter(
+    (kontak) => kontak.nama.toLowerCase() !== nama.toLowerCase()
+  );
+
+  if (contact.length === newContact.length) {
+    console.log(`${nama} tidak ditemukan`);
+    return false;
+  }
+
+  fs.writeFileSync("./data/kontak.json", JSON.stringify(newContact));
+  console.log(`${nama} berhasil dihapus`);
+};
+
+module.exports = { simpanData, listKontak, detailKontak, deleteKontak };
