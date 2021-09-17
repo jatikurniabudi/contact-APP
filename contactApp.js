@@ -91,10 +91,15 @@ if (!fs.existsSync("./data/kontak.json")) {
 //   });
 // };
 
-const simpanData = (nama, email, noHP) => {
-  const kontak = { nama, email, noHP };
+const loadKontak = () => {
   const file = fs.readFileSync("./data/kontak.json", "utf-8");
   const contact = JSON.parse(file);
+  return contact;
+};
+
+const simpanData = (nama, email, noHP) => {
+  const kontak = { nama, email, noHP };
+  const contact = loadKontak();
 
   //cek nama duplicate
   const duplicate = contact.find((contact) => contact.nama === nama);
@@ -122,4 +127,13 @@ const simpanData = (nama, email, noHP) => {
   fs.writeFileSync("./data/kontak.json", JSON.stringify(contact));
 };
 
-module.exports = { simpanData };
+const listKontak = () => {
+  const contact = loadKontak();
+
+  console.log("Daftar kontak");
+  contact.forEach((contact, i) => {
+    console.log(`${i + 1}. ${contact.nama} - ${contact.noHP}`);
+  });
+};
+
+module.exports = { simpanData, listKontak };
