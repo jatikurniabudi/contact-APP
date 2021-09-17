@@ -102,7 +102,9 @@ const simpanData = (nama, email, noHP) => {
   const contact = loadKontak();
 
   //cek nama duplicate
-  const duplicate = contact.find((contact) => contact.nama === nama);
+  const duplicate = contact.find(
+    (contact) => contact.nama.toLowerCase() === nama
+  );
   if (duplicate) {
     console.log(chalk.red.bold("Data sudah ada, gunakan nama lain"));
     return false;
@@ -136,4 +138,21 @@ const listKontak = () => {
   });
 };
 
-module.exports = { simpanData, listKontak };
+const detailKontak = (nama) => {
+  const contact = loadKontak();
+
+  const kontak = contact.find((kontak) => kontak.nama.toLowerCase() === nama);
+
+  if (!kontak) {
+    console.log(`${nama} tidak ditemukan pada daftar`);
+    return false;
+  }
+
+  console.log(kontak.nama);
+  if (kontak.email) {
+    console.log(`Email : ${kontak.email}`);
+  }
+  console.log(`No.HP : ${kontak.noHP}`);
+};
+
+module.exports = { simpanData, listKontak, detailKontak };

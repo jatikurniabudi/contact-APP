@@ -1,7 +1,7 @@
 const { type } = require("os");
 const { demand, demandOption } = require("yargs");
 const yargs = require("yargs");
-const { simpanData, listKontak } = require("./contactApp");
+const { simpanData, listKontak, detailKontak } = require("./contactApp");
 
 //add contact
 yargs
@@ -39,4 +39,21 @@ yargs.command({
     listKontak();
   },
 });
+
+//show detail kontak
+yargs.command({
+  command: "detail",
+  describe: "Menampilkan detail kontak",
+  builder: {
+    nama: {
+      describe: "Nama lengkap",
+      demandOption: true,
+      type: "string",
+    },
+  },
+  handler(argv) {
+    detailKontak(argv.nama);
+  },
+});
+
 yargs.parse();
